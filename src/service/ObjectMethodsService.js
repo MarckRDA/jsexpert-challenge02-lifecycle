@@ -1,18 +1,36 @@
 class ObjectMethodsService {
   getEnhancedObject(rawObject) {
-    // TODO: return an enhanced object implementing `valueOf` or `toString` depending on the context
-    return null;
+    const obj = {
+      ...rawObject,
+      valueOf() {
+        return rawObject.age
+      }
+    }
+    return obj
   }
 
   getEnhancedObject2(rawObject) {
-    // TODO: return an enhanced object implementing `valueOf` or `toString` depending on the context
-    return null;
+    const obj = {
+      ...rawObject,
+      toString() {
+        return `[name="${rawObject.name}",age=${rawObject.age}]`
+      }
+    }
+    return obj
   }
 
   getEnhancedObjectWithoutValueOfOrToString(rawObject) {
-    // TODO: return an enhanced object **WITHOUT** implementing `valueOf` nor `toString`.
-    // Note: Implementing `toString` and `valueOf` will NOT be allowed in this function.
-    return null;
+    const obj = {
+      ...rawObject,
+      [Symbol.toPrimitive](coercionType) {
+        const types = {
+            string: `[name="${rawObject.name}",age=${rawObject.age}]`,
+            number: rawObject.age
+        }
+        return types[coercionType] || types.string
+    }
+    }
+    return obj
   }
 }
 
